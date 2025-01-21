@@ -9,6 +9,18 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// envelope is used to hold a JSON object inside some value.
+//
+// Example:
+//
+//		{
+//		 "envelope-key": {
+//	      ...JSON object...
+//		}
+//
+// }
+type envelope map[string]any
+
 // readIDParam reads the id parameter from the URL and converts it to an integer.
 // If the id parameter cannot be parsed to an integer, or is less than 1, it returns an error.
 func (app *application) readIDParam(r *http.Request) (int64, error) {
@@ -23,7 +35,7 @@ func (app *application) readIDParam(r *http.Request) (int64, error) {
 }
 
 // writeJSON responds to the request with a JSON payload.
-func (app *application) writeJSON(w http.ResponseWriter, status int, data any, headers http.Header) error {
+func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
 	js, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
 		return err
