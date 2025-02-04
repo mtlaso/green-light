@@ -44,6 +44,7 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 	// Append a newline to the JSON response body, for better readability.
 	js = append(js, '\n')
 
+	// Set headers.
 	for key, value := range headers {
 		w.Header()[key] = value
 	}
